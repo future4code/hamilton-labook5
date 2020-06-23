@@ -42,4 +42,41 @@ export class UserController {
 
     await ServerDataBase.destroyConnection();
   }
+
+  async login(request: Request, response: Response) {
+    const { email, password, device } = request.body;
+    const id = await new UserBusiness().login(email, password, device);
+
+    const authenticator = new Authenticator();
+    const accessToken = authenticator.generateToken(id, "1d");
+
+    const refreshToken = authenticator.generateToken(
+      { id, device },
+      process.env.REFRESH_TOKEN_EXPIRES_IN
+    );
+
+    const refreshTokenDatabase = new RefreshTokenDataBase();
+    const retrievedTokenFromDatabase = await refreshTokenDatabase.getRefreshTokenByIdAndDevice(
+      id,
+      device
+    );
+
+    if (retrievedTokenFromDatabase) {
+      await refreshTokenDatabase.deleteRefreshToken(
+        retrievedTokenFromDatabase.token
+      );
+    }
+
+    await refreshTokenDatabase.storeRefreshToken(
+      refreshToken,
+      device,
+      true,
+      id
+    );
+
+    response.status(200).send({
+      accessToken,
+      refreshToken,
+    });
+  }
 }

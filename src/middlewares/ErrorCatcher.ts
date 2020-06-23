@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express'
-import { CustomError } from '../Util/CustomError'
+import { CustomError } from '../util/CustomError'
 
 export default function errorCatcher (
     error : Error,
