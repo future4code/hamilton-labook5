@@ -1,8 +1,8 @@
 import express from "express";
 import "express-async-errors";
 import { AddressInfo } from "net";
-import errorCatcher from "./Middlewares/ErrorCatcher";
-import routes from "./Routes";
+import errorCatcher from "./middlewares/ErrorCatcher";
+import routes from "./routes";
 
 const app = express();
 

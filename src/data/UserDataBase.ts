@@ -23,6 +23,15 @@ export class UserDatabase extends ServerDataBase {
         `);
   }
 
+  public async getUserByEmail(email: string): Promise <any> {
+    const resultDatabase = await this.getConnection().raw(`
+      SELECT * FROM ${UserDatabase.TABLE_NAME}
+      WHERE email = "${email}"
+    `)
+
+    return resultDatabase[0][0]
+  }
+
   // public async getUserByEmail(email: string): Promise<any> {
   //     const result = await this.getConnection()
   //         .select("*")
