@@ -14,7 +14,8 @@ export class UserBusiness {
     name: string,
     password: string,
     email: string,
-    device: string
+    device: string, 
+    role: string 
   ) {
     const isEmail = validateEmail(email);
     if (!isEmail) {
@@ -28,10 +29,10 @@ export class UserBusiness {
 
     const newHash = await new HashManager().createHash(password);
 
-    await this.userDataBase.signup(id, name, newHash, email, device);
+    await this.userDataBase.signup(id, name, newHash, email, device, role);
   }
 
-  public async login(email: string, password: string, device: string) {
+  public async login(email: string, password: string) {
     const isEmail = validateEmail(email);
     if (!isEmail) {
       throw new CustomError("Email inválido!", 412);
@@ -52,6 +53,6 @@ export class UserBusiness {
       throw new CustomError("Invalid password", 400);
     }
 
-    return user.id;
+    return {id: user.id, role: user.role};
   }
 }
