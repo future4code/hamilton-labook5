@@ -25,4 +25,12 @@ export class FriendshipDatabase extends ServerDataBase {
 
     return resultDatabase[0];
   }
+
+  public async deleteFriendship(idUser: string, idFriend: string): Promise<void> {
+    await this.getConnection().raw(`
+      DELETE FROM ${FriendshipDatabase.TABLE_NAME}
+      WHERE (user_a = "${idUser}" AND user_b = "${idFriend}")
+      OR (user_b = "${idUser}" AND user_a = "${idFriend}")
+    `)
+  }
 }
