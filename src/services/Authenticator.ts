@@ -1,7 +1,6 @@
 import * as jwt from "jsonwebtoken";
 
 export class Authenticator {
-  
   public generateToken(
     input: AuthenticationData,
     expiresIn: string = process.env.REFRESH_TOKEN_EXPIRES_IN!
@@ -10,6 +9,7 @@ export class Authenticator {
       {
         id: input.id,
         device: input.device,
+        role: input.role,
       },
       process.env.JWT_KEY as string,
       {
@@ -24,11 +24,14 @@ export class Authenticator {
     const result = {
       id: payload.id,
       device: payload.device,
-    };return result;
+      role: payload.role,
+    };
+    return result;
   }
 }
 
 interface AuthenticationData {
   id: string;
   device?: string;
+  role?: string;
 }

@@ -4,17 +4,19 @@ import { IdGenerator } from "../services/IdGenetor";
 import { Authenticator } from "../services/Authenticator";
 import { RefreshTokenDataBase } from "../data/RefreshTokenDataBase";
 import { ServerDataBase } from "../data/ServerDataBase";
+import { Friendship } from "src/data/FriendshipDataBase";
 
 export class UserController {
   async signup(request: Request, response: Response) {
     const newId = new IdGenerator().generate();
-    const { name, email, password, device } = request.body;
+    const { name, email, password, device, role } = request.body;
 
-    await new UserBusiness().signup(newId, name, password, email, device);
+    await new UserBusiness().signup(newId, name, password, email, device, role);
 
     const newAccessToken = new Authenticator().generateToken(
       {
         id: newId,
+        role
       },
       "1d"
     );
@@ -44,20 +46,20 @@ export class UserController {
   }
 
   async login(request: Request, response: Response) {
-    const { email, password, device } = request.body;
-    const id = await new UserBusiness().login(email, password, device);
+    const { email, password, device} = request.body;
+    const user = await new UserBusiness().login(email, password);
 
     const authenticator = new Authenticator();
-    const accessToken = authenticator.generateToken(id, "1d");
+    const accessToken = authenticator.generateToken({id: user.id, role: user.role}, "1d");
 
     const refreshToken = authenticator.generateToken(
-      { id, device },
+      { id: user.id, device },
       process.env.REFRESH_TOKEN_EXPIRES_IN
     );
 
     const refreshTokenDatabase = new RefreshTokenDataBase();
     const retrievedTokenFromDatabase = await refreshTokenDatabase.getRefreshTokenByIdAndDevice(
-      id,
+      user.id,
       device
     );
 
@@ -71,12 +73,30 @@ export class UserController {
       refreshToken,
       device,
       true,
-      id
+      user.id
     );
 
     response.status(200).send({
       accessToken,
       refreshToken,
+    });
+  }
+
+  async friendship(request: Request, response: Response) {
+
+    const token = request.headers.token as string;
+    const authenticator = new Authenticator();
+    const authenticationData = authenticator.getData(token);
+
+    const idFriend = request.params.id
+
+
+
+    const friendship = new Friendship()
+    const resposta = await friendship.getFriendship(authenticationData.id, idFriend)
+
+    response.status(200).send({
+      AMIZADE: resposta
     });
   }
 }
