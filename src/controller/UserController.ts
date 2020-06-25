@@ -4,7 +4,6 @@ import { IdGenerator } from "../services/IdGenetor";
 import { Authenticator } from "../services/Authenticator";
 import { RefreshTokenDataBase } from "../data/RefreshTokenDataBase";
 import { ServerDataBase } from "../data/ServerDataBase";
-import { Friendship } from "src/data/FriendshipDataBase";
 
 export class UserController {
   async signup(request: Request, response: Response) {
@@ -16,7 +15,7 @@ export class UserController {
     const newAccessToken = new Authenticator().generateToken(
       {
         id: newId,
-        role
+        role,
       },
       "1d"
     );
@@ -46,11 +45,14 @@ export class UserController {
   }
 
   async login(request: Request, response: Response) {
-    const { email, password, device} = request.body;
+    const { email, password, device } = request.body;
     const user = await new UserBusiness().login(email, password);
 
     const authenticator = new Authenticator();
-    const accessToken = authenticator.generateToken({id: user.id, role: user.role}, "1d");
+    const accessToken = authenticator.generateToken(
+      { id: user.id, role: user.role },
+      "1d"
+    );
 
     const refreshToken = authenticator.generateToken(
       { id: user.id, device },
@@ -80,23 +82,7 @@ export class UserController {
       accessToken,
       refreshToken,
     });
-  }
 
-  async friendship(request: Request, response: Response) {
-
-    const token = request.headers.token as string;
-    const authenticator = new Authenticator();
-    const authenticationData = authenticator.getData(token);
-
-    const idFriend = request.params.id
-
-
-
-    const friendship = new Friendship()
-    const resposta = await friendship.getFriendship(authenticationData.id, idFriend)
-
-    response.status(200).send({
-      AMIZADE: resposta
-    });
+    await ServerDataBase.destroyConnection();
   }
 }
