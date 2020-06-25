@@ -2,13 +2,19 @@ import express from "express";
 import "express-async-errors";
 import { AddressInfo } from "net";
 import errorCatcher from "./middlewares/ErrorCatcher";
-import routes from "./routes";
+import { userRoutes } from "./routes/UserRoutes";
+import { feedRoutes } from "./routes/FeedRoutes";
+import { postRoutes } from "./routes/PostRoutes";
+
 
 const app = express();
 
 app.use(express.json());
 
-app.use(routes);
+app.use("/feed", feedRoutes);
+app.use("/post", postRoutes);
+app.use(userRoutes)
+
 
 app.use(errorCatcher);
 
