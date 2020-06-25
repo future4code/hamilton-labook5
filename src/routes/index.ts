@@ -13,5 +13,6 @@ routes.post("/friendship/:id", new FriendshipController().createFriendship)
 routes.delete("/friendship/:id", new FriendshipController().deleteFriendship)
 routes.post("/user/post", new PostController().toPost)
 routes.get("/feed", new FeedController().getFeed)
+routes.get("/feed/type?", new FeedController().getFeedByType)
 
 export default routes
