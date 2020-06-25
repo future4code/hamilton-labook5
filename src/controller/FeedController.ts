@@ -7,7 +7,7 @@ export class FeedController {
 
   async getFeed(request: Request, response: Response) {
     const user = new Authenticator().getData(
-      request.headers.authorization as string
+      request.headers.token as string
     );
         if(!user){
             throw new CustomError ("Problemas de autenticação. Logue novamente", 401)
@@ -19,7 +19,7 @@ export class FeedController {
 
   async getFeedByType(request: Request, response: Response) {
     const user = new Authenticator().getData(
-      request.headers.authorization as string
+      request.headers.token as string
     );
 
     const feedByType = await new FeedBusiness().getFeedByType(

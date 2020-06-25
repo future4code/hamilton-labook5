@@ -1,5 +1,4 @@
 import { ServerDataBase } from "./ServerDataBase";
-import { UserDatabase } from "./UserDataBase";
 
 export class RefreshTokenDataBase extends ServerDataBase {
   private static TABLE_NAME = "laBook_refresh_token";
@@ -53,32 +52,4 @@ export class RefreshTokenDataBase extends ServerDataBase {
       WHERE refresh_token = "${token}" 
     `)
   }
-
-
-
-  // public async getRefreshToken(token: string): Promise<any> {
-  //   const tokenInfo = await this.getConnection()
-  //     .select("*")
-  //     .from(RefreshTokenDataBase.TABLE_NAME)
-  //     .where({
-  //       refresh_token: token,
-  //     });
-
-  //   const retrievedToken = tokenInfo[0][0];
-
-  //   return {
-  //     token: retrievedToken.refresh_token,
-  //     device: retrievedToken.device,
-  //     isActive: Number(retrievedToken.is_active) === 1 ? true : false,
-  //     userId: retrievedToken.user_id,
-  //   };
-  // }
-
-
-  // public async deleteUserRefreshToken(user_id: string) {
-  //   await this.getConnection()
-  //     .delete()
-  //     .where({ user_id })
-  //     .into(RefreshTokenDataBase.TABLE_NAME);
-  // }
 }
