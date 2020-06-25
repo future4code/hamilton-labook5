@@ -32,16 +32,16 @@ export class UserDatabase extends ServerDataBase {
 
     return resultDatabase[0][0];
   }
+
+  public async getUserById(id: string): Promise<any> {
+    const result = await this.getConnection()
+      .select("*")
+      .from(UserDatabase.TABLE_NAME)
+      .where({ id });
+
+    return result[0];
+  }
 }
-
-// public async getUserById(id: string): Promise<any> {
-//     const result = await this.getConnection()
-//         .select("*")
-//         .from(UserDatabase.TABLE_NAME)
-//         .where({ id });
-
-//     return result[0];
-// }
 
 // public async deleteUser(id: string): Promise<void> {
 //     await this.getConnection()
