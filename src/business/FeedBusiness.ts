@@ -1,15 +1,14 @@
 import { FeedDataBase } from "src/data/FeedDataBase";
 
-
 export class FeedBusiness {
 
-    async getFeed ( friendsList : any[] ){
-        let feed : any[] = [];
-        let friend
+  async getFeed(userId: string) {
+    const feed = await new FeedDataBase().getFeed(userId);
+    return feed;
+  }
 
-        for ( friend of friendsList ){
-            const post : any = await new FeedDataBase().getFeed( friend )
-            feed.push(post)
-        }
-    }
+  async getFeedByType(userId: string, type : string) {
+    const feed = await new FeedDataBase().getFeedbyType(userId, type);
+    return feed;
+  }
 }

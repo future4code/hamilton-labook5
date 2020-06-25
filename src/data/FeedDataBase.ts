@@ -1,27 +1,59 @@
 import { ServerDataBase } from "./ServerDataBase";
 
 export class FeedDataBase extends ServerDataBase {
-  private static TABLE_FRIEND = "laBook_friend";
-  private static TABLE_POST = "laBook_post"
+  private static TABLE_NAME = "laBook_friend";
 
-  public async getAllFriends ( idUser : string) : Promise<any> {
-    const friends = await this.getConnection().raw(`
-      SELECT * FROM ${FeedDataBase.TABLE_FRIEND}
-      WHERE user_a = "${idUser}"
-      OR
-      WHERE user_b = "${idUser}"
-    `)
+  public async getFeed(idFriend: string): Promise<any> {
 
-    console.log(friends[0][0])
+    const feed = await this.getConnection().raw(`
+      SELECT 
+        post.user,
+        post.id,
+        post.picture_url,
+        post.description,
+        post.created_on,
+        post.type
+      FROM ${FeedDataBase.TABLE_NAME} as friend
+        JOIN laBook_post as post
+          ON friend.user_a = post.user
+          OR friend.user_b = post.user
+      WHERE 
+          (
+            user_a = "${idFriend}"
+        OR
+            user_b = "${idFriend}"
+          )
+        AND post.user <> "560cb667-05f5-404d-a428-ae18da66b536"
+      ORDER BY created_on DESC
+  `);
+    return feed[0];
   }
-  public async getFeed(
-    idFriend: string,
-  ): Promise<any> {
-    await this.getConnection()
-    .select("*")
-    .from(FeedDataBase.TABLE_POST)
-    .where({id: idFriend})
+
+  public async getFeedbyType(idFriend: string, type : string): Promise<any> {
+
+    const feed = await this.getConnection().raw(`
+      SELECT 
+        post.user,
+        post.id,
+        post.picture_url,
+        post.description,
+        post.created_on,
+        post.type
+      FROM ${FeedDataBase.TABLE_NAME} as friend
+        JOIN laBook_post as post
+          ON friend.user_a = post.user
+          OR friend.user_b = post.user
+      WHERE 
+          (user_a = "${idFriend}"
+          AND
+          type = '${type}'
+        OR
+          user_b = "${idFriend}"
+          AND
+          type = '${type}')
+        AND post.user <> "560cb667-05f5-404d-a428-ae18da66b536"
+      ORDER BY created_on DESC
+  `);
+    return feed[0];
   }
-
-
 }
