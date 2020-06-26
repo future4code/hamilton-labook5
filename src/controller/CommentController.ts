@@ -25,6 +25,8 @@ export class CommentController {
 
     await new CommentDataBase().postComment( commentInput )
 
+    await new CommentDataBase().postComment( commentInput )
+
     response.status(200).send({
         message: 'Comentário postado com sucesso!'
     });
