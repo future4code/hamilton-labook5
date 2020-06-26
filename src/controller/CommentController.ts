@@ -1,16 +1,14 @@
 import { Request, Response } from "express";
 import { Authenticator } from "src/services/Authenticator";
-import { FeedBusiness } from "@business/FeedBusiness";
 import { CustomError } from "src/util/CustomError";
 import { CommentDTO } from "src/model/Comment";
-import { CommentDataBase } from "src/data/CommentDataBase";
+import { CommentBusiness } from "@business/CommentBusiness";
 
 export class CommentController {
-
   async postComment(request: Request, response: Response) {
     const token = request.headers.token as string;
 
-    const user = new Authenticator().getData( token );
+    const user = new Authenticator().getData(token);
     if (!user) {
       throw new CustomError("Problemas de autenticação. Logue novamente", 401);
     }
@@ -23,10 +21,10 @@ export class CommentController {
       created_on: new Date(),
     };
 
-    await new CommentDataBase().postComment( commentInput )
+    await new CommentBusiness().postComment(commentInput);
 
     response.status(200).send({
-        message: 'Comentário postado com sucesso!'
+      message: "Comentário postado com sucesso!",
     });
   }
 }

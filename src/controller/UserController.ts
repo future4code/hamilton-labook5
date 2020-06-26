@@ -4,7 +4,6 @@ import { IdGenerator } from "../services/IdGenetor";
 import { Authenticator } from "../services/Authenticator";
 import { RefreshTokenDataBase } from "../data/RefreshTokenDataBase";
 import { ServerDataBase } from "../data/ServerDataBase";
-import { UserDatabase } from "src/data/UserDataBase";
 
 export class UserController {
   async signup(request: Request, response: Response) {
@@ -86,5 +85,4 @@ export class UserController {
 
     await ServerDataBase.destroyConnection();
   }
-
 }

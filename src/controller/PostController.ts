@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { Authenticator } from "../services/Authenticator";
 import { PostBusiness } from "@business/PostBusiness";
 import { CustomError } from "src/util/CustomError";
-import { Post, PostInputDTO } from "src/model/Post";
+import { PostInputDTO } from "src/model/Post";
 
 export class PostController {
   
