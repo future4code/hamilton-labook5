@@ -2,7 +2,6 @@ import { Request, Response } from "express";
 import { Authenticator } from "../services/Authenticator";
 import { ServerDataBase } from "../data/ServerDataBase";
 import { FriendshipBusiness } from "@business/FriendshipBusiness";
-import { FriendshipDatabase } from "src/data/FriendshipDataBase";
 
 export class FriendshipController {
   async createFriendship(request: Request, response: Response) {

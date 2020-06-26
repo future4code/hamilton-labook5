@@ -1,3 +1,4 @@
+import { PostDataBase } from "src/data/PostDataBase";
 
 export class Post {
 
