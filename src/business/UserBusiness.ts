@@ -3,8 +3,6 @@ import validateEmail from "../util/emailValidate";
 import { CustomError } from "../util/CustomError";
 import { validatePassword } from "../util/validatePassword";
 import { HashManager } from "../services/HashManager";
-import { Authenticator } from "src/services/Authenticator";
-import { RefreshTokenDataBase } from "src/data/RefreshTokenDataBase";
 
 export class UserBusiness {
   private userDataBase = new UserDatabase();
@@ -55,4 +53,5 @@ export class UserBusiness {
 
     return {id: user.id, role: user.role};
   }
+
 }
