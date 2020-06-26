@@ -22,6 +22,26 @@ export class RefreshTokenDataBase extends ServerDataBase {
       `);
   }
 
+  public async getRefreshToken(token: string): Promise<any> {
+    console.log('refreshtoken', token)
+
+    const tokenInfo = await this.getConnection()
+      .select("*")
+      .from(RefreshTokenDataBase.TABLE_NAME)
+      .where({
+        refresh_token: token,
+      });
+    const retrievedToken = tokenInfo[0];
+
+    return {
+      token: retrievedToken.refresh_token,
+      device: retrievedToken.device,
+      isActive: Number(retrievedToken.is_active) === 1 ? true : false,
+      userId: retrievedToken.user_id,
+    };
+  }
+
+
   public async getRefreshTokenByIdAndDevice(
     id: string,
     device: string

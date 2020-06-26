@@ -5,7 +5,7 @@ import errorCatcher from "./middlewares/ErrorCatcher";
 import { userRoutes } from "./routes/UserRoutes";
 import { feedRoutes } from "./routes/FeedRoutes";
 import { postRoutes } from "./routes/PostRoutes";
-
+import { refreshTokenRoutes } from "./routes/RefreshTokenRoutes";
 
 const app = express();
 
@@ -13,8 +13,8 @@ app.use(express.json());
 
 app.use("/feed", feedRoutes);
 app.use("/post", postRoutes);
-app.use(userRoutes)
-
+app.use("/refreshtoken", refreshTokenRoutes);
+app.use(userRoutes);
 
 app.use(errorCatcher);
 
