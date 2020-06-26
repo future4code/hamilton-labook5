@@ -6,6 +6,7 @@ import { userRoutes } from "./routes/UserRoutes";
 import { feedRoutes } from "./routes/FeedRoutes";
 import { postRoutes } from "./routes/PostRoutes";
 import { refreshTokenRoutes } from "./routes/RefreshTokenRoutes";
+import { commentRoutes } from "./routes/CommentRoutes";
 
 const app = express();
 
@@ -14,6 +15,7 @@ app.use(express.json());
 app.use("/feed", feedRoutes);
 app.use("/post", postRoutes);
 app.use("/refreshtoken", refreshTokenRoutes);
+app.use("/comment", commentRoutes)
 app.use(userRoutes);
 
 app.use(errorCatcher);
