@@ -3,7 +3,11 @@ import { ServerDataBase } from "./ServerDataBase";
 export class FeedDataBase extends ServerDataBase {
   private static TABLE_NAME = "laBook_friend";
 
-  public async getFeed(idFriend: string): Promise<any> {
+  public async getFeed(
+    idFriend: string,
+    postsPerPage: number,
+    page: number
+  ): Promise<any> {
 
     const feed = await this.getConnection().raw(`
       SELECT 
@@ -25,12 +29,18 @@ export class FeedDataBase extends ServerDataBase {
           )
         AND post.user <> "560cb667-05f5-404d-a428-ae18da66b536"
       ORDER BY created_on DESC
+      LIMIT ${postsPerPage}
+      OFFSET ${page}
   `);
     return feed[0];
   }
 
-  public async getFeedbyType(idFriend: string, type : string): Promise<any> {
-
+  public async getFeedbyType(
+    idFriend: string,
+    type: string,
+    postsPerPage: number,
+    page: number
+  ): Promise<any> {
     const feed = await this.getConnection().raw(`
       SELECT 
         post.user,
@@ -53,6 +63,8 @@ export class FeedDataBase extends ServerDataBase {
           type = '${type}')
         AND post.user <> "560cb667-05f5-404d-a428-ae18da66b536"
       ORDER BY created_on DESC
+      LIMIT ${postsPerPage}
+      OFFSET ${page}
   `);
     return feed[0];
   }
